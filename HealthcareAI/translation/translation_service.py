@@ -115,7 +115,7 @@ class TranslationService:
 
     def translate_input_if_needed(self, text: str, language: str) -> str:
         """
-        Translates incoming clinical query text to English if target language is Tamil/Hindi/Malayalam.
+        Translates incoming clinical query text to English if target language is one of the supported Indian languages.
         Bypasses translation if input is already English.
         """
         lang = language.lower()
@@ -123,18 +123,18 @@ class TranslationService:
             logger.info("Input query is in English. Skipping translation.")
             return text
         
-        if lang in ["tamil", "ta"]:
-            src_lang = "ta"
-        elif lang in ["malayalam", "ml"]:
-            src_lang = "ml"
-        else:
-            src_lang = "hi"
+        supported_langs = ["ta", "hi", "ml", "te", "kn", "bn", "gu", "mr", "pa", "or", "as", "ur", "ne", "sa", "brx", "doi", "ks", "kok", "mai", "mni", "sat", "sd"]
+        src_lang = "hi"
+        for code in supported_langs:
+            if lang == code or lang.startswith(code):
+                src_lang = code
+                break
             
         return self.translate(text, src_lang=src_lang, tgt_lang="en")
 
     def translate_output_if_needed(self, text: str, language: str) -> str:
         """
-        Translates generated English response back to target local language (Tamil/Hindi/Malayalam).
+        Translates generated English response back to target local language.
         Bypasses translation if target is English.
         """
         lang = language.lower()
@@ -142,12 +142,12 @@ class TranslationService:
             logger.info("Target language is English. Skipping output translation.")
             return text
             
-        if lang in ["tamil", "ta"]:
-            tgt_lang = "ta"
-        elif lang in ["malayalam", "ml"]:
-            tgt_lang = "ml"
-        else:
-            tgt_lang = "hi"
+        supported_langs = ["ta", "hi", "ml", "te", "kn", "bn", "gu", "mr", "pa", "or", "as", "ur", "ne", "sa", "brx", "doi", "ks", "kok", "mai", "mni", "sat", "sd"]
+        tgt_lang = "hi"
+        for code in supported_langs:
+            if lang == code or lang.startswith(code):
+                tgt_lang = code
+                break
             
         return self.translate(text, src_lang="en", tgt_lang=tgt_lang)
 

@@ -56,27 +56,36 @@ class ASRService:
             return ""
 
         lang = language.lower()
+        lang_map = {
+            "ta": "ta-IN", "tamil": "ta-IN",
+            "hi": "hi-IN", "hindi": "hi-IN",
+            "ml": "ml-IN", "malayalam": "ml-IN",
+            "te": "te-IN", "telugu": "te-IN",
+            "kn": "kn-IN", "kannada": "kn-IN",
+            "bn": "bn-IN", "bengali": "bn-IN",
+            "gu": "gu-IN", "gujarati": "gu-IN",
+            "mr": "mr-IN", "marathi": "mr-IN",
+            "pa": "pa-IN", "punjabi": "pa-IN",
+            "or": "or-IN", "oriya": "or-IN", "odia": "or-IN",
+            "as": "as-IN", "assamese": "as-IN",
+            "ur": "ur-IN", "urdu": "ur-IN",
+            "ne": "ne-NP", "nepali": "ne-NP",
+            "sa": "sa-IN", "sanskrit": "sa-IN",
+            "brx": "brx-IN", "bodo": "brx-IN",
+            "doi": "doi-IN", "dogri": "doi-IN",
+            "ks": "ks-IN", "kashmiri": "ks-IN",
+            "kok": "kok-IN", "konkani": "kok-IN",
+            "mai": "mai-IN", "maithili": "mai-IN",
+            "mni": "mni-IN", "manipuri": "mni-IN",
+            "sat": "sat-IN", "santali": "sat-IN",
+            "sd": "sd-IN", "sindhi": "sd-IN"
+        }
+
         lang_code = "en"
-        if lang in ["tamil", "ta"]:
-            lang_code = "ta"
-        elif lang in ["hindi", "hi"]:
-            lang_code = "hi"
-        elif lang in ["malayalam", "ml"]:
-            lang_code = "ml"
-        elif lang in ["telugu", "te"]:
-            lang_code = "te"
-        elif lang in ["kannada", "kn"]:
-            lang_code = "kn"
-        elif lang in ["bengali", "bn"]:
-            lang_code = "bn"
-        elif lang in ["gujarati", "gu"]:
-            lang_code = "gu"
-        elif lang in ["marathi", "mr"]:
-            lang_code = "mr"
-        elif lang in ["punjabi", "pa"]:
-            lang_code = "pa"
-        elif lang in ["oriya", "odia", "or"]:
-            lang_code = "or"
+        for k in lang_map:
+            if lang == k:
+                lang_code = lang_map[k].split("-")[0]
+                break
 
         # Try high-quality SpeechRecognition (Google Web API) for dynamic transcription
         # especially for English (which has no local Bhashini conformer) and general fallback.
@@ -87,27 +96,7 @@ class ASRService:
                 audio_data = r.record(source)
             
             # Map target language for speech recognizer
-            g_lang = "en-US"
-            if lang_code == "ta":
-                g_lang = "ta-IN"
-            elif lang_code == "hi":
-                g_lang = "hi-IN"
-            elif lang_code == "ml":
-                g_lang = "ml-IN"
-            elif lang_code == "te":
-                g_lang = "te-IN"
-            elif lang_code == "kn":
-                g_lang = "kn-IN"
-            elif lang_code == "bn":
-                g_lang = "bn-IN"
-            elif lang_code == "gu":
-                g_lang = "gu-IN"
-            elif lang_code == "mr":
-                g_lang = "mr-IN"
-            elif lang_code == "pa":
-                g_lang = "pa-IN"
-            elif lang_code == "or":
-                g_lang = "or-IN"
+            g_lang = lang_map.get(lang, "en-US")
 
             logger.info(f"Attempting SpeechRecognition (Google API) for language: {g_lang}")
             text = r.recognize_google(audio_data, language=g_lang)

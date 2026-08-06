@@ -67,14 +67,12 @@ class TTSService:
             try:
                 # Map language code
                 lang = language.lower()
-                if lang in ["tamil", "ta"]:
-                    lang_code = "ta"
-                elif lang in ["hindi", "hi"]:
-                    lang_code = "hi"
-                elif lang in ["malayalam", "ml"]:
-                    lang_code = "ml"
-                else:
-                    lang_code = "en"
+                supported_langs = ["ta", "hi", "ml", "te", "kn", "bn", "gu", "mr", "pa", "or", "as", "ur", "ne", "sa", "brx", "doi", "ks", "kok", "mai", "mni", "sat", "sd"]
+                lang_code = "en"
+                for code in supported_langs:
+                    if lang == code or lang.startswith(code):
+                        lang_code = code
+                        break
 
                 logger.info(f"Running Bhashini TTS engine for language: {lang_code}")
                 result = self.bhashini_tts.infer(

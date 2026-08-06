@@ -101,20 +101,11 @@ def main():
                 
             language = "auto"
             print("\nSelect Language:")
-            print("1. Auto-Detect (auto)")
-            print("2. Hindi (hi)")
-            print("3. Tamil (ta)")
-            print("4. Malayalam (ml)")
-            print("5. English (en)")
-            lang_opt = input("Enter language option (1-5) [default=Auto-Detect]: ").strip()
-            if lang_opt == '2':
-                language = "hi"
-            elif lang_opt == '3':
-                language = "ta"
-            elif lang_opt == '4':
-                language = "ml"
-            elif lang_opt == '5':
-                language = "en"
+            print("Type the language code or press Enter for default:")
+            print("Options: auto (Auto-Detect), hi (Hindi), ta (Tamil), ml (Malayalam), te (Telugu), kn (Kannada), bn (Bengali), gu (Gujarati), mr (Marathi), pa (Punjabi), or (Oriya), as (Assamese), ur (Urdu), ne (Nepali), sa (Sanskrit), brx (Bodo), doi (Dogri), ks (Kashmiri), kok (Konkani), mai (Maithili), mni (Manipuri), sat (Santali), sd (Sindhi), en (English)")
+            lang_input = input("Enter language code [default=auto]: ").strip().lower()
+            if lang_input in ["auto", "hi", "ta", "ml", "te", "kn", "bn", "gu", "mr", "pa", "or", "as", "ur", "ne", "sa", "brx", "doi", "ks", "kok", "mai", "mni", "sat", "sd", "en"]:
+                language = lang_input
         else:
             print("\n--------------------------------------------------")
             print(f"[*] Clarifying Question Active. Reusing Mode={mode}, Language={language}")

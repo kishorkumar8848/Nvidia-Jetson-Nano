@@ -159,44 +159,42 @@ class DesktopMockUI:
         lbl_sett = tk.Label(self.settings_frame, text="Configure Language Settings", bg="#1E1E1E", fg="#FFFFFF", font=self.font_title)
         lbl_sett.pack(pady=10)
 
-        # Language Select Radio Buttons
-        self.lang_var = tk.StringVar(value="auto")
-        
+        # Define all 22 Bhashini languages + English + Auto-Detect
+        self.languages_map = {
+            "Auto-Detect (auto)": "auto",
+            "English (en)": "en",
+            "Hindi (hi)": "hi",
+            "Tamil (ta)": "ta",
+            "Malayalam (ml)": "ml",
+            "Telugu (te)": "te",
+            "Kannada (kn)": "kn",
+            "Bengali (bn)": "bn",
+            "Gujarati (gu)": "gu",
+            "Marathi (mr)": "mr",
+            "Punjabi (pa)": "pa",
+            "Oriya / Odia (or)": "or",
+            "Assamese (as)": "as",
+            "Urdu (ur)": "ur",
+            "Nepali (ne)": "ne",
+            "Sanskrit (sa)": "sa",
+            "Bodo (brx)": "brx",
+            "Dogri (doi)": "doi",
+            "Kashmiri (ks)": "ks",
+            "Konkani (kok)": "kok",
+            "Maithili (mai)": "mai",
+            "Manipuri (mni)": "mni",
+            "Santali (sat)": "sat",
+            "Sindhi (sd)": "sd"
+        }
+        self.lang_names = list(self.languages_map.keys())
+
         lbl_lang = tk.Label(self.settings_frame, text="ASR & Response Language:", bg="#1E1E1E", fg="#CCCCCC", font=self.font_text)
         lbl_lang.pack(pady=5)
-        
-        frame_radio = tk.Frame(self.settings_frame, bg="#1E1E1E")
-        frame_radio.pack(pady=5)
-        
-        tk.Radiobutton(
-            frame_radio, text="Auto-Detect (auto)", variable=self.lang_var, value="auto",
-            bg="#1E1E1E", fg="#FFFFFF", selectcolor="#1E1E1E", activebackground="#1E1E1E", activeforeground="#FFFFFF",
-            command=self.save_lang_settings
-        ).pack(side=tk.LEFT, padx=10)
 
-        tk.Radiobutton(
-            frame_radio, text="Hindi (hi)", variable=self.lang_var, value="hi",
-            bg="#1E1E1E", fg="#FFFFFF", selectcolor="#1E1E1E", activebackground="#1E1E1E", activeforeground="#FFFFFF",
-            command=self.save_lang_settings
-        ).pack(side=tk.LEFT, padx=10)
-        
-        tk.Radiobutton(
-            frame_radio, text="Tamil (ta)", variable=self.lang_var, value="ta",
-            bg="#1E1E1E", fg="#FFFFFF", selectcolor="#1E1E1E", activebackground="#1E1E1E", activeforeground="#FFFFFF",
-            command=self.save_lang_settings
-        ).pack(side=tk.LEFT, padx=10)
-        
-        tk.Radiobutton(
-            frame_radio, text="Malayalam (ml)", variable=self.lang_var, value="ml",
-            bg="#1E1E1E", fg="#FFFFFF", selectcolor="#1E1E1E", activebackground="#1E1E1E", activeforeground="#FFFFFF",
-            command=self.save_lang_settings
-        ).pack(side=tk.LEFT, padx=10)
-
-        tk.Radiobutton(
-            frame_radio, text="English (en)", variable=self.lang_var, value="en",
-            bg="#1E1E1E", fg="#FFFFFF", selectcolor="#1E1E1E", activebackground="#1E1E1E", activeforeground="#FFFFFF",
-            command=self.save_lang_settings
-        ).pack(side=tk.LEFT, padx=10)
+        self.combo_lang = ttk.Combobox(self.settings_frame, values=self.lang_names, state="readonly", font=self.font_text, width=25)
+        self.combo_lang.set("Auto-Detect (auto)")
+        self.combo_lang.pack(pady=10)
+        self.combo_lang.bind("<<ComboboxSelected>>", self.save_lang_settings)
 
         # Close button
         btn_close = tk.Button(
@@ -227,19 +225,11 @@ class DesktopMockUI:
             self.settings_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.8, relheight=0.8)
             self.settings_visible = True
 
-    def save_lang_settings(self):
-        self.asr_lang = self.lang_var.get()
-        if self.asr_lang == "hi":
-            lang_name = "Hindi"
-        elif self.asr_lang == "ta":
-            lang_name = "Tamil"
-        elif self.asr_lang == "ml":
-            lang_name = "Malayalam"
-        elif self.asr_lang == "auto":
-            lang_name = "Auto-Detect"
-        else:
-            lang_name = "English"
-        self.mode_label.config(text=f"MODE: {lang_name} ({self.asr_lang})")
+    def save_lang_settings(self, event=None):
+        selected_name = self.combo_lang.get()
+        self.asr_lang = self.languages_map.get(selected_name, "auto")
+        display_name = selected_name.split(" (")[0]
+        self.mode_label.config(text=f"MODE: {display_name} ({self.asr_lang})")
 
     def clear_screen(self):
         self.toptext.delete("1.0", tk.END)
