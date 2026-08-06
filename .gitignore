@@ -1,0 +1,26 @@
+# Large models and checkpoints
+bhashini_models/
+models/
+
+# Local configuration and environment secrets
+.env
+*.db
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Logs, temporary files, and audio/image captures
+logs/
+*.wav
+*.mp3
+*.jpg
+*.png
+*.webp
+
+# Python cache and IDE files
+__pycache__/
+*.pyc
+.pytest_cache/
+.vscode/
+.idea/
+.gemini/
