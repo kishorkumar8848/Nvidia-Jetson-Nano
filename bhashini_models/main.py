@@ -155,15 +155,15 @@ class BashiniAPIServer:
         self.logger.info("Running Speech-to-Speech Pipeline...")
 
         # ASR
-        asr_out = run_asr(audio_b64, src_lang)
+        asr_out = self.run_asr(audio_b64, src_lang)
         text_src = asr_out["text"]
 
         # NMT
-        nmt_out = run_nmt(text_src, src_lang, tgt_lang)
+        nmt_out = self.run_nmt(text_src, src_lang, tgt_lang)
         text_tgt = nmt_out["translated_text"]
 
         # TTS
-        tts_out = run_tts(text_tgt, tgt_lang, return_base64=True)
+        tts_out = self.run_tts(text_tgt, tgt_lang)
 
         return {
             "asr_text": text_src,
