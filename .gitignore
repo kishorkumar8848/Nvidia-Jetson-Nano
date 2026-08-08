@@ -1,6 +1,9 @@
 # Large models and checkpoints
-bhashini_models/
 models/
+bhashini_models/**/checkpoints/
+bhashini_models/venv/
+bhashini_models/tts/flite/
+
 
 # Local configuration and environment secrets
 .env

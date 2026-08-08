@@ -1,0 +1,11 @@
+numpy 
+regex
+sentencepiece
+indic-nlp-library
+mosestokenizer
+nltk
+sacremoses
+ctranslate2==4.1.0
+onnxruntime
+librosa
+torch
